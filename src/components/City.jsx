@@ -28,6 +28,8 @@ function City() {
 
   const { cityName, emoji, date, notes } = currentCity;
 
+  // console.log(currentCity);
+
   return (
     <div className={styles.city}>
       <div className={styles.row}>

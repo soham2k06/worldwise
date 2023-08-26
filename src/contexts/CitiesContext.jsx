@@ -68,50 +68,49 @@ function CitiesProvider({ children }) {
   // const [isLoading, setIsLoading] = useState(false);
   // const [currentCity, setCurrentCity] = useState({});
 
-  const intitCities = [
-    {
-      cityName: "Surat",
-      country: "India",
-      emoji: "🇮🇳",
-      date: "2023-07-02T09:24:11.863Z",
-      notes: "Super 😃",
-      position: {
-        lat: 21.1702,
-        lng: 72.8311,
-      },
-      id: 38748347,
-    },
-    {
-      cityName: "Madrid",
-      country: "Spain",
-      emoji: "🇪🇸",
-      date: "2027-07-15T08:22:53.976Z",
-      notes: "",
-      position: {
-        lat: 40.46635901755316,
-        lng: -3.7133789062500004,
-      },
-      id: 17806751,
-    },
-    {
-      cityName: "Surat",
-      country: "India",
-      emoji: "🇮🇳",
-      date: "2023-08-25T13:14:14.648Z",
-      notes: "good place\n",
-      position: {
-        lat: "21.22218129956861",
-        lng: "72.82905578613283",
-      },
-      id: 38748348,
-    },
-  ];
-
   useEffect(function () {
+    const intitialCities = [
+      {
+        cityName: "Surat",
+        country: "India",
+        emoji: "🇮🇳",
+        date: "2023-07-02T09:24:11.863Z",
+        notes: "Super 😃",
+        position: {
+          lat: 21.1702,
+          lng: 72.8311,
+        },
+        id: 38748347,
+      },
+      {
+        cityName: "Madrid",
+        country: "Spain",
+        emoji: "🇪🇸",
+        date: "2027-07-15T08:22:53.976Z",
+        notes: "",
+        position: {
+          lat: 40.46635901755316,
+          lng: -3.7133789062500004,
+        },
+        id: 17806751,
+      },
+      {
+        cityName: "Surat",
+        country: "India",
+        emoji: "🇮🇳",
+        date: "2023-08-25T13:14:14.648Z",
+        notes: "good place\n",
+        position: {
+          lat: "21.22218129956861",
+          lng: "72.82905578613283",
+        },
+        id: 38748348,
+      },
+    ];
     async function fetchCities() {
       dispatch({ type: "loading" });
       try {
-        dispatch({ type: "cities/loaded", payload: intitCities });
+        dispatch({ type: "cities/loaded", payload: intitialCities });
       } catch {
         alert("Error loading data");
       }
@@ -125,14 +124,17 @@ function CitiesProvider({ children }) {
 
       dispatch({ type: "loading" });
       try {
-        const res = await fetch(`${BASE_URL}/cities/${id}`);
-        const data = await res.json();
-        dispatch({ type: "city/loaded", payload: data });
+        // const res = await fetch(`${BASE_URL}/cities/${id}`);
+        const curCity = cities?.find((city) => city?.id === +id);
+        dispatch({
+          type: "city/loaded",
+          payload: curCity,
+        });
       } catch {
         dispatch({ type: "rejected", payload: "Error loading data" });
       }
     },
-    [currentCity.id]
+    [cities, currentCity.id]
   );
 
   async function createCity(newCity) {
